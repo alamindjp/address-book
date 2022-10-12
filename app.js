@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const { query } = require('express');
 require('dotenv').config();
-const app = express();
+const app = express()
+const ObjectId = require('mongodb').ObjectId
 
 app.use(cors());
 app.use(express.json());
@@ -31,11 +33,10 @@ async function run() {
             const result = await contactCallection.insertMany(newusers)
             res.send(result)
         });
-        app.patch('/contact/:id', async (req, res) => {
+        app.delete('/contact/:id', async (req, res) => {
             const { id } = req.params;
-            const { name, gender, contact, address, }=req.body;
-            const newusers = req.body;
-            const result = await contactCallection.insertMany(newusers)
+            const query = { _id: ObjectId(id) }
+            const result = await contactCallection.deleteOne(query)
             res.send(result)
         });
 
